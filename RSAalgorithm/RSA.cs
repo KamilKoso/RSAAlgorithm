@@ -10,8 +10,8 @@ namespace RSAalgorithm
 {
    public class RSA
     {
-      public  int p { get; set; }
-       public int q { get; set; }
+        int p { get; set; }
+        int q { get; set; }
         int z { get; set; }
         int e { get; set; }
         int d { get; set; }
@@ -23,8 +23,6 @@ namespace RSAalgorithm
             //RequestP();
             //RequestQ();
             setValues();
-            
-
         }
 
         
@@ -114,12 +112,10 @@ namespace RSAalgorithm
             }
         }
 
-        int calculateN()
-        { return p * q; }
+        int calculateN(){ return p * q; }
 
         int calculateE()
         {
-            
             int[] primes = GeneratePrimes(z).ToArray();
 
 
@@ -200,7 +196,7 @@ namespace RSAalgorithm
             return true;
         }
 
-        public List<BigInteger> CodeMessage(string message)
+        public List<BigInteger> EncodeMessage(string message)
         {
             List<BigInteger> codedLetters = new List<BigInteger>();
             for(int i=0;i<message.Length;i++)

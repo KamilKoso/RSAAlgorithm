@@ -18,7 +18,7 @@ namespace RSAalgorithm
 
             Console.WriteLine("Podaj twoją wiadomość do zakodowania");
             
-          List<BigInteger> test =  rsa.CodeMessage(Console.ReadLine());
+          List<BigInteger> test =  rsa.EncodeMessage(Console.ReadLine());
             Console.WriteLine("---------------CODED MESSAGE-----------------");
             foreach(int i in test)
                 Console.Write(i+", ");
