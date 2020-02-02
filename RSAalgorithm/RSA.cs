@@ -10,61 +10,60 @@ namespace RSAalgorithm
 {
    public class RSA
     {
-        int p { get; set; }
-        int q { get; set; }
-        int z { get; set; }
-        int e { get; set; }
-        int d { get; set; }
-        int n { get; set; }
-        public int randomPrimeMaxValue { get; set; } = 500;
+        int P { get; set; }
+        int Q { get; set; }
+        int Z { get; set; }
+        int E { get; set; }
+        int D { get; set; }
+        int N { get; set; }
+        public int RandomPrimeMaxValue { get; set; } = 500;
 
         public RSA()
         {
             //RequestP();
             //RequestQ();
-            setValues();
+            SetValues();
         }
 
         
 
 
-        public string returnPublicKey()
+        public string ReturnPublicKey()
         {
-           return ($"Twój klucz publiczny to [{n},{e}]" );
+           return ($"Twój klucz publiczny to [{N},{E}]" );
         }
 
-       public string returnPrivateKey()
+       public string ReturnPrivateKey()
         {
-            return ($"Twój klucz prywatny to [{n},{d}]");
+            return ($"Twój klucz prywatny to [{N},{D}]");
         }
         
 
-        public void setValues()
+        public void SetValues()
         {
-            p = GeneratePrime();
+            P = GeneratePrime();
             Thread.Sleep(1000); //W przeciwnym wypadku wygeneruje 2 te same liczby pierwsze dla p i Q
-            q = GeneratePrime();
-            z = calculateZ();
-            e = calculateE();
-            d = calculateD();
-            n = calculateN();
+            Q = GeneratePrime();
+            Z = CalculateZ();
+            E = CalculateE();
+            D = CalculateD();
+            N = CalculateN();
             
         }
 
         public void RequestP()
         {
-            int pBeforeCheck;
 
             //Pobieranie P
             Console.WriteLine("Proszę podać liczbę pierwszą P");
-            bool isParsingSuccesfull = Int32.TryParse(Console.ReadLine(), out pBeforeCheck);
+            bool isParsingSuccesfull = Int32.TryParse(Console.ReadLine(), out int pBeforeCheck);
             if (!isParsingSuccesfull)
             {
                 Console.WriteLine("Nie udało się skonwerować podanych znaków na liczbę. Czy podajesz tylko dodatnie liczby ?");
                 RequestP();
             }
-            if (isPrime(pBeforeCheck))
-                p = pBeforeCheck;
+            if (IsPrime(pBeforeCheck))
+                P = pBeforeCheck;
             else
             {
              Console.WriteLine("Podana liczba nie jest liczbą pierwszą. Proszę podać liczbę pierwszą");
@@ -74,18 +73,17 @@ namespace RSAalgorithm
 
         public void RequestQ()   
         {
-            int qBeforeCheck;
-  
+
             //Pobieranie Q
             Console.WriteLine("Proszę podać liczbę pierwszą Q");
-           bool isParsingSuccesfull = Int32.TryParse(Console.ReadLine(), out qBeforeCheck);
+            bool isParsingSuccesfull = Int32.TryParse(Console.ReadLine(), out int qBeforeCheck);
                 if (!isParsingSuccesfull)
                 {
                 Console.WriteLine("Nie udało się skonwerować podanych znaków na liczbę. Czy podajesz tylko liczby ?");
                 RequestQ();
                 }
-            if (isPrime(qBeforeCheck))
-                q = qBeforeCheck;
+            if (IsPrime(qBeforeCheck))
+                Q = qBeforeCheck;
             else
             {
                 Console.WriteLine("Podana liczba nie jest liczbą pierwszą. Proszę podać liczbę pierwszą\n");
@@ -100,42 +98,41 @@ namespace RSAalgorithm
             Random random = new Random();
             while (true)
             {
-                int randomNum = 0;
-                 randomNum = random.Next(randomPrimeMaxValue);
+                int randomNum = random.Next(RandomPrimeMaxValue);
                 if (randomNum % 2 == 0)
-                    randomNum = randomNum / 2;
-                if (isPrime(randomNum))
+                    randomNum /= 2;
+                if (IsPrime(randomNum))
                 {
                     return randomNum;
-                    break;
+                   
                 }
             }
         }
 
-        int calculateN(){ return p * q; }
+        int CalculateN(){ return P * Q; }
 
-        int calculateE()
+        int CalculateE()
         {
-            int[] primes = GeneratePrimes(z).ToArray();
+            int[] primes = GeneratePrimes(Z).ToArray();
 
 
             for (int i = primes.Length; i >= 2; i--)
-                if (BiggestCommonDivider(i, z) == 1)    //Jezeli wspolnym dzielnikiem I z Z jest 1 to znaczy ze I jest wzglednie pierwsze z Z
+                if (BiggestCommonDivider(i, Z) == 1)    //Jezeli wspolnym dzielnikiem I z Z jest 1 to znaczy ze I jest wzglednie pierwsze z Z
                     return i;
             return -1; //Nie ma takich liczb
         }
 
-         int calculateZ()
+         int CalculateZ()
         {
-            return ((p - 1) * (q - 1));
+            return ((P - 1) * (Q - 1));
         }
 
-        int calculateD()
+        int CalculateD()
         {
             for (int i = 1; i < Int32.MaxValue; i++)
             {
 
-                if (i * e % z == 1 && i!=e)
+                if (i * E % Z == 1 && i!=E)
                     return i;
             }
             return -1; //Nie ma takiej liczby
@@ -145,15 +142,17 @@ namespace RSAalgorithm
 
         List<int> GeneratePrimes(int limit)
         {
-            List<int> primes = new List<int>();
-            primes.Add(2);
-            primes.Add(3);
+            List<int> primes = new List<int>
+            {
+                2,
+                3
+            };
 
             if (limit % 2 == 0)
                 limit++;
 
             for (int i = 5; i <= limit; i += 2)
-                if (isPrime(i))
+                if (IsPrime(i))
                     primes.Add(i);
 
             return primes;
@@ -171,7 +170,7 @@ namespace RSAalgorithm
             return a;
         }
 
-        public static bool isPrime(int check)
+         static bool IsPrime(int check)
         {
             if (check <= 1) return false;
             if (check == 2) return true;
@@ -196,24 +195,25 @@ namespace RSAalgorithm
             return true;
         }
 
-        public List<BigInteger> EncodeMessage(string message)
+        public List<int> EncodeMessage(string message)
         {
-            List<BigInteger> codedLetters = new List<BigInteger>();
-            for(int i=0;i<message.Length;i++)
+            List<int> codedLetters = new List<int>();
+            for (int i = 0; i < message.Length; i++)
             {
                 int letterinASCII = message[i];
-                codedLetters.Add(BigInteger.Pow(letterinASCII,e)%n);
+                BigInteger calculationBigInt = BigInteger.Pow(letterinASCII, E) % N;
+                codedLetters.Add((int)calculationBigInt);
             }
             return codedLetters;
         }
 
-        public string DecodeMessage(List<BigInteger> codedList)
+        public string DecodeMessage(List<int> codedList)
         {
-            string message="";
-            foreach(var i in codedList)
+            string message = "";
+            foreach (var i in codedList)
             {
-                
-                char decodedChar = (char)(BigInteger.Pow(i,d) % n);
+
+                char decodedChar = (char)(BigInteger.Pow(i, D) % N);
                 message += decodedChar.ToString();
             }
             return message;

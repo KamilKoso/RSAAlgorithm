@@ -9,16 +9,16 @@ namespace RSAalgorithm
 {
     class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             RSA rsa = new RSA();
 
-            Console.WriteLine(rsa.returnPrivateKey());
-            Console.WriteLine(rsa.returnPublicKey());
+            Console.WriteLine(rsa.ReturnPrivateKey());
+            Console.WriteLine(rsa.ReturnPublicKey());
 
             Console.WriteLine("Podaj twoją wiadomość do zakodowania");
             
-          List<BigInteger> test =  rsa.EncodeMessage(Console.ReadLine());
+          List<int> test =  rsa.EncodeMessage(Console.ReadLine());
             Console.WriteLine("---------------CODED MESSAGE-----------------");
             foreach(int i in test)
                 Console.Write(i+", ");
