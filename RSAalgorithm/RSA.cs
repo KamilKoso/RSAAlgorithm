@@ -96,11 +96,12 @@ namespace RSAalgorithm
         int GeneratePrime()
         {
             Random random = new Random();
+            int randomNum = random.Next(RandomPrimeMaxValue);
             while (true)
             {
-                int randomNum = random.Next(RandomPrimeMaxValue);
+                randomNum += 2;
                 if (randomNum % 2 == 0)
-                    randomNum /= 2;
+                    randomNum += 1;
                 if (IsPrime(randomNum))
                 {
                     return randomNum;
